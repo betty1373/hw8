@@ -12,7 +12,7 @@ add_executable(bulk ${PROJECT_SOURCE_DIR}/main.cpp ${PROJECT_SOURCE_DIR}/inc/Log
 set_target_properties(bulk PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
-    COMPILE_OPTIONS "-Wall;-Wextra;-pedantic"
+    COMPILE_OPTIONS "-Wall;-Wextra;-pedantic;-Werror"
 )
 
 install(TARGETS bulk RUNTIME DESTINATION bin)
