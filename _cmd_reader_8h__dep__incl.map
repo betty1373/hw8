@@ -1,0 +1,5 @@
+<map id="inc/CmdReader.h" name="inc/CmdReader.h">
+<area shape="rect" id="node1" title="Class for reading commands from input stream, processing their and notifying subscribers." alt="" coords="5,5,127,32"/>
+<area shape="rect" id="node2" href="$_logger_8h.html" title="Class outs data from stringstream to console." alt="" coords="19,80,113,107"/>
+<area shape="rect" id="node3" href="$main_8cpp.html" title="Main function. Test for processing commands." alt="" coords="29,155,103,181"/>
+</map>

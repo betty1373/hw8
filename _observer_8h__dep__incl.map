@@ -1,0 +1,6 @@
+<map id="inc/Observer.h" name="inc/Observer.h">
+<area shape="rect" id="node1" title="Abstract Interfaces for ObserverPattern." alt="" coords="13,5,119,32"/>
+<area shape="rect" id="node2" href="$_cmd_reader_8h.html" title="Class for reading commands from input stream, processing their and notifying subscribers." alt="" coords="5,80,127,107"/>
+<area shape="rect" id="node3" href="$_logger_8h.html" title="Class outs data from stringstream to console." alt="" coords="19,155,113,181"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="Main function. Test for processing commands." alt="" coords="29,229,103,256"/>
+</map>

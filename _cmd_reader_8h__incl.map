@@ -1,0 +1,12 @@
+<map id="inc/CmdReader.h" name="inc/CmdReader.h">
+<area shape="rect" id="node1" title="Class for reading commands from input stream, processing their and notifying subscribers." alt="" coords="222,5,343,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,77,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="101,80,160,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="185,80,239,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="263,80,302,107"/>
+<area shape="rect" id="node6" title=" " alt="" coords="327,80,388,107"/>
+<area shape="rect" id="node7" href="$_observer_8h.html" title="Abstract Interfaces for ObserverPattern." alt="" coords="412,80,497,107"/>
+<area shape="rect" id="node10" title=" " alt="" coords="521,80,580,107"/>
+<area shape="rect" id="node8" title=" " alt="" coords="373,155,443,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="467,155,535,181"/>
+</map>
