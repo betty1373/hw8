@@ -3,19 +3,30 @@ cmake_minimum_required(VERSION 3.2)
 if (NOT DEFINED ENV{GITHUB_RUN_NUMBER})
     set(ENV{GITHUB_RUN_NUMBER} 1)
 endif()
-project(bulk VERSION 0.0.$ENV{GITHUB_RUN_NUMBER})
+project(bayan VERSION 0.0.$ENV{GITHUB_RUN_NUMBER})
+
+find_package (Boost 1.71 COMPONENTS program_options filesystem regex REQUIRED)
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+
+find_package (GTest REQUIRED)
+find_package (Threads REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS})
 
 configure_file(version.h.in ${PROJECT_SOURCE_DIR}/version.h)
 
-add_executable(bulk ${PROJECT_SOURCE_DIR}/main.cpp ${PROJECT_SOURCE_DIR}/inc/Logger.h)
+add_executable(bayan ${PROJECT_SOURCE_DIR}/main.cpp ${PROJECT_SOURCE_DIR}/inc/Options.h)
 
-set_target_properties(bulk PROPERTIES
+set_target_properties(bayan PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     COMPILE_OPTIONS "-Wall;-Wextra;-pedantic;-Werror"
 )
+target_link_libraries(bayan PRIVATE ${Boost_LIBRARIES})
 
-install(TARGETS bulk RUNTIME DESTINATION bin)
+install(TARGETS bayan RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")

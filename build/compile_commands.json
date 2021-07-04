@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/btv/hw8/build",
+  "command": "/usr/bin/g++-9  -DBOOST_ALL_NO_LIB -DBOOST_FILESYSTEM_DYN_LINK -DBOOST_PROGRAM_OPTIONS_DYN_LINK -DBOOST_REGEX_DYN_LINK  -g   -Wall -Wextra -pedantic -Werror -std=gnu++17 -o CMakeFiles/bayan.dir/main.cpp.o -c /home/btv/hw8/main.cpp",
+  "file": "/home/btv/hw8/main.cpp"
+}
+]
