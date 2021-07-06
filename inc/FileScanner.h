@@ -10,10 +10,10 @@
 /// @file
 /// @brief Class of file options
 /// @author btv<example@example.com>
-using fs = boots:filesystem;
+
 class FileOptions {
 public:
-    path m_path;
+    fs::path m_path;
     std::vector<std::string> m_hash;
     std::size_t m_size;
 
@@ -28,18 +28,18 @@ public:
 class FileScanner {
 public:
 /// @brief Find file's dublicates
-    void dublicates(const Options& ops) {
-        auto m_files = getDirs(ops.scanDirs, ops.depthScan);
-    };
+    // void dublicates(const Options& ops) {
+    //     auto m_files = getDirs(ops.get().scanDirs, ops.get().depthScan);
+    // };
     
 private:
 /// @brief Scan dirs
-  std::vector<path> getDirs(const std::vector<path>& inputs, const size_t depth) {
-      std::vector<path> result;
+  std::vector<fs::path> getDirs(const boost::optional<std::vector<fs::path>>& inputs, const size_t depth) {
+      std::vector<fs::path> result;
       for (auto &d : inputs) {
           
-        if (is_directory(d) && Options::isExclude(d)) 
-            result.push_back(d);
+        // if (is_directory(d) && Options::isExclude(d)) 
+        //     result.push_back(d);
 
         boost::filesystem::recursive_directory_iterator it(d), end;
         while (it != end)
@@ -49,21 +49,21 @@ private:
                 ++it;
                 continue;
             }
-            else if (dir.depth() >= depth)
+            else if (it.depth() >= depth)
             {
-                ++dir;
+                ++it;
                 continue;
             }
-            else if (Options::isExclude(dir->path().filename())) 
-                result.push_back(d);
-            ++dir;
+        //    else if (Options::isExclude(dir->path().filename())) 
+          //      result.push_back(d);
+            ++it;
         }
       }
       return result;
   };
   /// @brief Scan files
-  std::vector<path> getFiles(const std::vector<path>& dirs, const std::vector<std::string>& masks, const size_t fileSize) {
-      std::vector<path> result;
+  std::vector<fs::path> getFiles(const std::vector<fs::path>& dirs, const std::vector<std::string>& masks, const size_t fileSize) {
+      std::vector<fs::path> result;
       for (const auto &d : dirs) {
         boost::filesystem::recursive_directory_iterator it(d), eod;
         while (it != eod)
@@ -80,9 +80,9 @@ private:
                     continue;
                 }
             }
-            else if (Options::isExclude(dir->path().filename())) 
-                result.push_back(d);
-            ++dir;
+           // else if (Options::isExclude(dir->path().filename())) 
+             //   result.push_back(d);
+            ++it;
         }
       }
       return result;
