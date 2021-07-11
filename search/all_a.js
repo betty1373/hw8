@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['platform_5fid_31',['PLATFORM_ID',['../_c_make_c_compiler_id_8c.html#adbc5372f40838899018fadbc89bd588b',1,'PLATFORM_ID():&#160;CMakeCCompilerId.c'],['../_c_make_c_x_x_compiler_id_8cpp.html#adbc5372f40838899018fadbc89bd588b',1,'PLATFORM_ID():&#160;CMakeCXXCompilerId.cpp']]],
-  ['project_5fversion_5fpatch_32',['PROJECT_VERSION_PATCH',['../version_8h.html#a4a5fc96a4bdd7d68ed99ccce9ca2e77e',1,'version.h']]]
+  ['options_43',['Options',['../struct_options.html',1,'']]],
+  ['options_2eh_44',['Options.h',['../_options_8h.html',1,'']]],
+  ['options_5fparser_45',['Options_Parser',['../class_options___parser.html',1,'Options_Parser'],['../class_options___parser.html#ac72a075396e88d4ef5fa6a6a9355192e',1,'Options_Parser::Options_Parser()']]]
 ];

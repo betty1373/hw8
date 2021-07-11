@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filelogger_50',['FileLogger',['../class_file_logger.html',1,'']]]
+  ['excludefilter_65',['ExcludeFilter',['../class_exclude_filter.html',1,'']]]
 ];

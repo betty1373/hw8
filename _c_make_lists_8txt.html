@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bulk: CMakeLists.txt File Reference</title>
+<title>bayan: CMakeLists.txt File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,9 +21,9 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">bulk
+   <div id="projectname">bayan
    </div>
-   <div id="projectbrief">otus hw6</div>
+   <div id="projectbrief">otus hw7</div>
   </td>
  </tr>
  </tbody>
@@ -73,10 +73,18 @@ $(function() {
 Functions</h2></td></tr>
 <tr class="memitem:a8d79dde94567b730c2e3ea0f264270c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#a8d79dde94567b730c2e3ea0f264270c2">cmake_minimum_required</a> (VERSION 3.2) if(NOT DEFINED ENV</td></tr>
 <tr class="separator:a8d79dde94567b730c2e3ea0f264270c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dceb0553c0d6ce8bd0dda82a9baed54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#a8dceb0553c0d6ce8bd0dda82a9baed54">set</a> (ENV{GITHUB_RUN_NUMBER} 1) endif() project(bulk VERSION 0.0. $ENV</td></tr>
-<tr class="separator:a8dceb0553c0d6ce8bd0dda82a9baed54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa009952b948f1fc0dc4c7af29629f253"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#aa009952b948f1fc0dc4c7af29629f253">configure_file</a> (version.h.in ${PROJECT_SOURCE_DIR}/version.h) add_executable(bulk $</td></tr>
-<tr class="separator:aa009952b948f1fc0dc4c7af29629f253"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11befcb90f83d8dd105fa3505fd1a067"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#a11befcb90f83d8dd105fa3505fd1a067">set</a> (ENV{GITHUB_RUN_NUMBER} 1) endif() project(bayan VERSION 0.0. $ENV</td></tr>
+<tr class="separator:a11befcb90f83d8dd105fa3505fd1a067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac679401e5766f1a67ac291b3bfeaafb0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#ac679401e5766f1a67ac291b3bfeaafb0">find_package</a> (Boost COMPONENTS program_options filesystem regex REQUIRED) <a class="el" href="_c_make_lists_8txt.html#a9267ccdfbbaf6ba4f55c35f3a1f7fd90">set</a>(Boost_USE_STATIC_LIBS OFF) <a class="el" href="_c_make_lists_8txt.html#a9267ccdfbbaf6ba4f55c35f3a1f7fd90">set</a>(Boost_USE_MULTITHREADED ON) <a class="el" href="_c_make_lists_8txt.html#a9267ccdfbbaf6ba4f55c35f3a1f7fd90">set</a>(Boost_USE_STATIC_RUNTIME OFF) find_package(GTest REQUIRED) find_package(Threads REQUIRED) include_directories($</td></tr>
+<tr class="separator:ac679401e5766f1a67ac291b3bfeaafb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a873792c3aa08dd120318fe5e9a4bf997"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#a873792c3aa08dd120318fe5e9a4bf997">configure_file</a> (version.h.in ${PROJECT_SOURCE_DIR}/version.h) add_executable(bayan $</td></tr>
+<tr class="separator:a873792c3aa08dd120318fe5e9a4bf997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a749deab870ee87e9be0237a0c324317a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> cpp&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#a749deab870ee87e9be0237a0c324317a">set_target_properties</a> (bayan PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON COMPILE_OPTIONS &quot;-Wall;-Wextra;-pedantic;-Werror&quot;) target_link_libraries(bayan PRIVATE $</td></tr>
+<tr class="separator:a749deab870ee87e9be0237a0c324317a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127fa295812f6f91db1a8a19d92157dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#a127fa295812f6f91db1a8a19d92157dc">install</a> (TARGETS bayan RUNTIME DESTINATION bin) <a class="el" href="_c_make_lists_8txt.html#a9267ccdfbbaf6ba4f55c35f3a1f7fd90">set</a>(CPACK_GENERATOR DEB) <a class="el" href="_c_make_lists_8txt.html#a9267ccdfbbaf6ba4f55c35f3a1f7fd90">set</a>(CPACK_PACKAGE_VERSION_MAJOR &quot;$</td></tr>
+<tr class="separator:a127fa295812f6f91db1a8a19d92157dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9267ccdfbbaf6ba4f55c35f3a1f7fd90"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_c_make_lists_8txt.html#a9267ccdfbbaf6ba4f55c35f3a1f7fd90">set</a> (CPACK_PACKAGE_VERSION_MINOR &quot;${PROJECT_VERSION_MINOR}&quot;) set(CPACK_PACKAGE_VERSION_PATCH &quot;$</td></tr>
+<tr class="separator:a9267ccdfbbaf6ba4f55c35f3a1f7fd90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a8d79dde94567b730c2e3ea0f264270c2"></a>
@@ -97,8 +105,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa009952b948f1fc0dc4c7af29629f253"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa009952b948f1fc0dc4c7af29629f253">&#9670;&nbsp;</a></span>configure_file()</h2>
+<a id="a873792c3aa08dd120318fe5e9a4bf997"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a873792c3aa08dd120318fe5e9a4bf997">&#9670;&nbsp;</a></span>configure_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -115,8 +123,62 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8dceb0553c0d6ce8bd0dda82a9baed54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dceb0553c0d6ce8bd0dda82a9baed54">&#9670;&nbsp;</a></span>set()</h2>
+<a id="ac679401e5766f1a67ac291b3bfeaafb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac679401e5766f1a67ac291b3bfeaafb0">&#9670;&nbsp;</a></span>find_package()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">find_package </td>
+          <td>(</td>
+          <td class="paramtype">Boost COMPONENTS program_options filesystem regex&#160;</td>
+          <td class="paramname"><em>REQUIRED</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a127fa295812f6f91db1a8a19d92157dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a127fa295812f6f91db1a8a19d92157dc">&#9670;&nbsp;</a></span>install()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">install </td>
+          <td>(</td>
+          <td class="paramtype">TARGETS bayan RUNTIME DESTINATION&#160;</td>
+          <td class="paramname"><em>bin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9267ccdfbbaf6ba4f55c35f3a1f7fd90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9267ccdfbbaf6ba4f55c35f3a1f7fd90">&#9670;&nbsp;</a></span>set() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">set </td>
+          <td>(</td>
+          <td class="paramtype">CPACK_PACKAGE_VERSION_MINOR &quot;${PROJECT_VERSION_MINOR}&quot;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a11befcb90f83d8dd105fa3505fd1a067"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11befcb90f83d8dd105fa3505fd1a067">&#9670;&nbsp;</a></span>set() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -126,6 +188,24 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">ENV{GITHUB_RUN_NUMBER}&#160;</td>
           <td class="paramname"><em>1</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a749deab870ee87e9be0237a0c324317a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a749deab870ee87e9be0237a0c324317a">&#9670;&nbsp;</a></span>set_target_properties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> cpp set_target_properties </td>
+          <td>(</td>
+          <td class="paramtype">bayan PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON COMPILE_OPTIONS &quot;-Wall;-Wextra;-pedantic;-Werror&quot;&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>

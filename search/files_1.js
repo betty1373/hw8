@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['install_5fmanifest_2etxt_58',['install_manifest.txt',['../install__manifest_8txt.html',1,'']]]
+  ['filescanner_2eh_79',['FileScanner.h',['../_file_scanner_8h.html',1,'']]],
+  ['filter_2eh_80',['Filter.h',['../_filter_8h.html',1,'']]]
 ];
