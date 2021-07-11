@@ -5,7 +5,7 @@ if (NOT DEFINED ENV{GITHUB_RUN_NUMBER})
 endif()
 project(bayan VERSION 0.0.$ENV{GITHUB_RUN_NUMBER})
 
-find_package (Boost 1.71 COMPONENTS program_options filesystem regex REQUIRED)
+find_package (Boost COMPONENTS program_options filesystem regex REQUIRED)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
