@@ -13,7 +13,7 @@ jobs:
         with:
           submodules: true
       - run: sudo apt-get update && sudo apt-get install doxygen doxygen-gui -y
-      - run: sudo apt-get update && sudo apt-get install libboost-dev -y
+      - run: sudo apt-get install libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev -y
       - run: cmake .
       - run: cmake --build .
       - run: cmake --build . --target package
