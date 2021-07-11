@@ -5,19 +5,19 @@ if (NOT DEFINED ENV{GITHUB_RUN_NUMBER})
 endif()
 project(bayan VERSION 0.0.$ENV{GITHUB_RUN_NUMBER})
 
-find_package (Boost COMPONENTS program_options filesystem regex REQUIRED)
+find_package(Boost COMPONENTS program_options filesystem regex REQUIRED)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
-find_package (GTest REQUIRED)
-find_package (Threads REQUIRED)
+find_package(GTest REQUIRED)
+find_package(Threads REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
 configure_file(version.h.in ${PROJECT_SOURCE_DIR}/version.h)
 
-add_executable(bayan ${PROJECT_SOURCE_DIR}/main.cpp ${PROJECT_SOURCE_DIR}/inc/Options.h)
+add_executable(bayan ${PROJECT_SOURCE_DIR}/main.cpp)
 
 set_target_properties(bayan PROPERTIES
     CXX_STANDARD 17
