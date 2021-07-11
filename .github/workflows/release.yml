@@ -13,7 +13,7 @@ jobs:
         with:
           submodules: true
       - run: sudo apt-get update && sudo apt-get install doxygen doxygen-gui -y
-      - run: cmake .
+      - run: sudo apt-get install libboost-dev -y
       - run: cmake --build .
       - run: cmake --build . --target package
       - run: doxygen Doxyfile
