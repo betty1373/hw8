@@ -36,7 +36,7 @@ class Options_Parser{
           ("size,s",   po::value<std::size_t>(), "Minimum file's size - default 1 byte")
           ("masks,m",  po::value<std::vector<std::string>>(), "File masks")
           ("block,b",  po::value<std::size_t>(), "Block size")
-          ("algo,a",   po::value<std::string>(), "Hash algorithm - default src32");    
+          ("algo,a",   po::value<std::string>(), "Hash algorithm - default crc32");    
      }
      
      boost::optional<Options> Parse(int argc, char ** argv)

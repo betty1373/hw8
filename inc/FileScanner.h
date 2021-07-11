@@ -31,8 +31,11 @@ public:
             while (it != end)
             {
                 std::pair<fs::path,std::size_t> dirPath = std::make_pair(it->path(), it.level());
-                if (fs::is_directory(it->path()) && !m_dirFilter->IsValid(dirPath)) {
-                    it.no_push();            
+             
+                if (fs::is_directory(it->path()) ) {
+
+                    //std::cout << it->path().string()<<std::endl;
+                    if (!m_dirFilter->IsValid(dirPath))  it.no_push();            
                 }
                 else {
                     if (fs::is_regular_file(it->path()) ) {
@@ -40,17 +43,27 @@ public:
              
                         if (m_fileFilter->IsValid(filePath) ) {
                             auto& uniquepaths = result[filePath.second];
+                             std::cout<<filePath.second<<" "<<filePath.first<<std::endl;
                             uniquepaths.insert(path);
                         }
                     }
                 }
+                boost::system::error_code ec;
+                it.increment(ec);
+                 if (ec) {
+                     std::cerr << "Error while accessing: " << it->path().string() << " :: " << ec.message() << '\n';
+              }
             }
         }
         if (!result.empty()) {
             auto it = result.begin();
 //filter single files
             while(it != result.end()) {
-                if (it->second.size() < 2) it = result.erase(it);
+              std::cout<<it->second.size()<<std::endl;
+                if (it->second.size() < 2) {
+                  
+                  it = result.erase(it);
+                }
                 else ++it;
             }
         }

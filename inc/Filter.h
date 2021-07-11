@@ -79,7 +79,7 @@ public:
 
   bool IsValid(const Path& a_path) override
   {
-    if (a_path.second >= m_depth) {;
+    if (a_path.second >= m_depth) {
       return false;    
     }
     return Filter::IsValid(a_path);
