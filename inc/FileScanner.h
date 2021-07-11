@@ -43,7 +43,6 @@ public:
              
                         if (m_fileFilter->IsValid(filePath) ) {
                             auto& uniquepaths = result[filePath.second];
-                             std::cout<<filePath.second<<" "<<filePath.first<<std::endl;
                             uniquepaths.insert(path);
                         }
                     }
@@ -59,9 +58,7 @@ public:
             auto it = result.begin();
 //filter single files
             while(it != result.end()) {
-              std::cout<<it->second.size()<<std::endl;
                 if (it->second.size() < 2) {
-                  
                   it = result.erase(it);
                 }
                 else ++it;
@@ -118,8 +115,9 @@ public:
 
   auto Scan(std::unordered_map<std::size_t,std::set<fs::path>> a_paths) {
 	    std::list<std::vector<fs::path>> result;
-      for (const auto [size,uniq_paths] : a_paths) {
-          auto duplicates = CheckPaths(uniq_paths);
+      for (const auto&  group : a_paths) {
+         std::cout<<group.second.size()<<std::endl;
+          auto duplicates = CheckPaths(group.second);
           auto groups = Groups(duplicates);
           std::copy(groups.begin(),groups.end(),std::back_inserter(result));
       }
@@ -131,9 +129,12 @@ private:
     std::unordered_map<std::string,std::pair<std::fstream, std::size_t>> result;
     
     for (const auto& path : a_paths) {
+      
         auto str_path = path.string();
+       
         std::fstream read_stream(str_path,std::fstream::in);
         result[str_path] = std::make_pair(std::move(read_stream),0);
+          
     }
     std::vector<char> buffer(m_block);
     bool endFiles = false;
@@ -142,7 +143,7 @@ private:
       for (auto& elem : result) {
         memset(buffer.data(), 0, m_block);
         auto& value = elem.second;
-
+        std::cout<<elem.first<<std::endl;
         auto readBytes = value.first.readsome(buffer.data(), m_block);
         endFiles = static_cast<size_t>(readBytes) < m_block;
         value.second = m_hashFunc(buffer.data(), buffer.size());

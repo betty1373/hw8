@@ -14,6 +14,7 @@ int main(int argc, char** argv) {
   auto groupPath = pathFinder.FindPaths(options.get().incPaths);
 
   FileScanner fileScanner(options.get().block, options.get().algo);
+  
   auto duplicates = fileScanner.Scan(groupPath);
 
   for (auto& dup : duplicates) {
