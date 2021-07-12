@@ -43,7 +43,7 @@ public:
              
                         if (m_fileFilter->IsValid(filePath) ) {
                             auto& uniquepaths = result[filePath.second];
-                            uniquepaths.insert(path);
+                            uniquepaths.insert(filePath.first);
                         }
                     }
                 }
@@ -84,7 +84,7 @@ private:
 
     static std::unique_ptr<Filter> CreateFilter(boost::optional<std::size_t>& a_minSize, const std::vector<std::string>& a_masks) 
     {
-        std::size_t minSize = 0;
+        std::size_t minSize = 1;
         if (a_minSize) {
             minSize = a_minSize.get();
         }
@@ -116,7 +116,13 @@ public:
   auto Scan(std::unordered_map<std::size_t,std::set<fs::path>> a_paths) {
 	    std::list<std::vector<fs::path>> result;
       for (const auto&  group : a_paths) {
-         std::cout<<group.second.size()<<std::endl;
+        // std::cout<<group.second.size()<<std::endl;
+        //   std::for_each(group.second.begin(),group.second.end(), 
+        //   [](const auto& value)
+        //   {
+        //     std::cout<<value<<std::endl;
+        //   }
+        // );
           auto duplicates = CheckPaths(group.second);
           auto groups = Groups(duplicates);
           std::copy(groups.begin(),groups.end(),std::back_inserter(result));
@@ -128,13 +134,10 @@ private:
   std::unordered_map<std::string,std::pair<std::fstream, std::size_t>> CheckPaths(const std::set<fs::path>& a_paths) {
     std::unordered_map<std::string,std::pair<std::fstream, std::size_t>> result;
     
-    for (const auto& path : a_paths) {
-      
-        auto str_path = path.string();
-       
+    for (const auto& path : a_paths) {      
+        auto str_path = path.string();       
         std::fstream read_stream(str_path,std::fstream::in);
-        result[str_path] = std::make_pair(std::move(read_stream),0);
-          
+        result[str_path] = std::make_pair(std::move(read_stream),0);          
     }
     std::vector<char> buffer(m_block);
     bool endFiles = false;
@@ -143,17 +146,17 @@ private:
       for (auto& elem : result) {
         memset(buffer.data(), 0, m_block);
         auto& value = elem.second;
-        std::cout<<elem.first<<std::endl;
+        //std::cout<<elem.first<<std::endl;
         auto readBytes = value.first.readsome(buffer.data(), m_block);
         endFiles = static_cast<size_t>(readBytes) < m_block;
         value.second = m_hashFunc(buffer.data(), buffer.size());
+        std::cout<<elem.first<<" "<<value.second<<" "<<readBytes<<std::endl;
       }
-
+      std::cout<<std::endl;
       auto it = result.begin();
       while (it != result.end()) {
         size_t count = 0;
         size_t curHash = it->second.second;
-
         std::for_each(result.begin(), result.end(), 
           [curHash, &count](const auto& value)
           {
@@ -162,7 +165,7 @@ private:
             }
           }
         );
-
+      // std::cout <<count<<std::endl;
         if (count == 1) {
           it = result.erase(it);
         }
