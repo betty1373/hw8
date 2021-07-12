@@ -150,9 +150,9 @@ private:
         auto readBytes = value.first.readsome(buffer.data(), m_block);
         endFiles = static_cast<size_t>(readBytes) < m_block;
         value.second = m_hashFunc(buffer.data(), buffer.size());
-        std::cout<<elem.first<<" "<<value.second<<" "<<readBytes<<std::endl;
+       // std::cout<<elem.first<<" "<<value.second<<" "<<readBytes<<std::endl;
       }
-      std::cout<<std::endl;
+      //std::cout<<std::endl;
       auto it = result.begin();
       while (it != result.end()) {
         size_t count = 0;
@@ -195,7 +195,6 @@ std::list<std::vector<fs::path>> Groups(std::unordered_map<std::string,std::pair
         ++it;
       }
     }
-
     if (!paths.empty()) {
       result.emplace_back(paths);
     }
