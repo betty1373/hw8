@@ -7,6 +7,8 @@
 #include <boost/program_options.hpp>
 #include <boost/optional/optional_io.hpp>
 #include <iostream>
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
 /// @file
 /// @brief Class of program options 
 /// @author btv<example@example.com>
@@ -94,5 +96,28 @@ class Options_Parser{
 private:
      po::options_description m_desc;
      po::variables_map m_vm;
+};
+/// @brief Mask for files
+class Mask
+{
+public:
+  explicit Mask(const std::string& a_mask)
+  {
+    auto mask = a_mask;
+    boost::replace_all(mask, ".", "\\.");
+    boost::replace_all(mask, "*", "\\*");
+    boost::replace_all(mask, "?", "\\?");
+    boost::replace_all(mask, "\\?", ".");
+    boost::replace_all(mask, "\\*", ".*");
+    m_regex = boost::regex(mask, boost::regex::icase );
+  }
+
+  bool Valid(const std::string& a_strValue)
+  {
+    return boost::regex_match(a_strValue, m_what, m_regex);
+  }
+private:
+  boost::regex m_regex;
+  boost::smatch m_what;
 };
 #endif

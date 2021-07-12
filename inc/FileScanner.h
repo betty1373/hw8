@@ -30,10 +30,8 @@ public:
             fs::recursive_directory_iterator it(path), end;
             while (it != end)
             {
-                std::pair<fs::path,std::size_t> dirPath = std::make_pair(it->path(), it.level());
-             
+                std::pair<fs::path,std::size_t> dirPath = std::make_pair(it->path(), it.level());             
                 if (fs::is_directory(it->path()) ) {
-
                     //std::cout << it->path().string()<<std::endl;
                     if (!m_dirFilter->IsValid(dirPath))  it.no_push();            
                 }
@@ -56,7 +54,6 @@ public:
         }
         if (!result.empty()) {
             auto it = result.begin();
-//filter single files
             while(it != result.end()) {
                 if (it->second.size() < 2) {
                   it = result.erase(it);
@@ -68,6 +65,7 @@ public:
     };
 
 private:
+/// @brief Filter for dirs
     static std::unique_ptr<Filter> CreateFilter(boost::optional<std::size_t>& a_depth, const Paths& a_paths)
     {   
         std::size_t depth = 0;
@@ -82,6 +80,7 @@ private:
         return depthFilter;
     }
 
+ /// @brief Filter for files
     static std::unique_ptr<Filter> CreateFilter(boost::optional<std::size_t>& a_minSize, const std::vector<std::string>& a_masks) 
     {
         std::size_t minSize = 1;
@@ -101,7 +100,7 @@ private:
 };
 
 using HashFunc_t = boost::function<std::size_t (char*, std::size_t)>;
-
+/// @brief File scanner
 class FileScanner
 {
 public:
@@ -112,7 +111,7 @@ public:
     }
     m_hashFunc = CreateHash(a_algo);
   }
-
+/// @brief Finding Duplicates
   auto Scan(std::unordered_map<std::size_t,std::set<fs::path>> a_paths) {
 	    std::list<std::vector<fs::path>> result;
       for (const auto&  group : a_paths) {
@@ -131,6 +130,7 @@ public:
   }
 
 private:
+/// @brief Compare hashes of files 
   std::unordered_map<std::string,std::pair<std::fstream, std::size_t>> CheckPaths(const std::set<fs::path>& a_paths) {
     std::unordered_map<std::string,std::pair<std::fstream, std::size_t>> result;
     
@@ -176,7 +176,8 @@ private:
     }
 
     return result;
-  }
+}
+/// @brief Grouping duplicate files
 std::list<std::vector<fs::path>> Groups(std::unordered_map<std::string,std::pair<std::fstream, std::size_t>>& a_paths)
 {
   std::list<std::vector<fs::path>> result;
@@ -202,7 +203,7 @@ std::list<std::vector<fs::path>> Groups(std::unordered_map<std::string,std::pair
 
   return result;
 }
-
+/// @brief Creater for Hash function
   static boost::function<std::size_t (char*, std::size_t)> CreateHash(boost::optional<std::string>& a_algo) {
   if (a_algo) {
     if (a_algo.get() == "crc16") {
@@ -214,7 +215,7 @@ std::list<std::vector<fs::path>> Groups(std::unordered_map<std::string,std::pair
   }
   return HashFunc<boost::crc_32_type>();
 }
-
+/// @brief Calc Hash 
   template<typename T>
   static boost::function<std::size_t (char* a_buffer, std::size_t a_count)> HashFunc() {
     return [](char* a_buffer, std::size_t a_count) {

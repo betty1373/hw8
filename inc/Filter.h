@@ -7,43 +7,21 @@
 #include <list>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string/replace.hpp>
 #include <memory>
-
+/// @file
+/// @brief filters - pattern Chain of responsibility
+/// @author btv<example@example.com>
 using Path = std::pair<boost::filesystem::path, std::size_t>; 
 using Paths = std::vector<boost::filesystem::path>;
 
-class Mask
-{
-public:
-  explicit Mask(const std::string& a_mask)
-  {
-    auto mask = a_mask;
-    boost::replace_all(mask, ".", "\\.");
-    boost::replace_all(mask, "*", "\\*");
-    boost::replace_all(mask, "?", "\\?");
-    boost::replace_all(mask, "\\?", ".");
-    boost::replace_all(mask, "\\*", ".*");
-    m_regex = boost::regex(mask, boost::regex::icase );
-  }
-
-  bool Valid(const std::string& a_strValue)
-  {
-    return boost::regex_match(a_strValue, m_what, m_regex);
-  }
-private:
-  boost::regex m_regex;
-  boost::smatch m_what;
-};
-
+/// @brief Abstract interface for filters
 class IFilter
 {
 public:
   virtual std::shared_ptr<IFilter>& SetNext(const std::shared_ptr<IFilter>& a_Filter) = 0;
   virtual bool IsValid(const Path& a_path) = 0;
 };
-
+/// @brief Base class for filter
 class Filter : public IFilter
 {
 public:
@@ -68,7 +46,7 @@ public:
 private:
   std::shared_ptr<IFilter> nextFilter;
 };
-
+/// @brief Filter for depth scan dirs
 class DepthFilter : public Filter
 {
 public:
@@ -88,7 +66,7 @@ public:
 private:
   std::size_t m_depth;
 };
-
+/// @brief Filter for exclude dirs
 class ExcludeFilter : public Filter
 {
 public:
@@ -118,7 +96,7 @@ public:
 private:
   Paths m_excPaths;
 };
-
+/// @brief Filter for file's size
 class MinSizeFilter : public Filter
 {
 public:
@@ -138,7 +116,7 @@ public:
 private:
   std::size_t m_size;
 };
-
+/// @brief Filter for file's masks
 class MasksFilter : public Filter
 {
 public:
@@ -166,4 +144,5 @@ public:
 private:
   std::vector<Mask> m_masks;
 };
+
 #endif
