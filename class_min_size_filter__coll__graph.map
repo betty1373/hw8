@@ -1,5 +1,5 @@
 <map id="MinSizeFilter" name="MinSizeFilter">
-<area shape="rect" id="node1" title=" " alt="" coords="5,155,103,181"/>
-<area shape="rect" id="node2" href="$class_filter.html" title=" " alt="" coords="29,80,79,107"/>
-<area shape="rect" id="node3" href="$class_i_filter.html" title=" " alt="" coords="27,5,81,32"/>
+<area shape="rect" id="node1" title="Filter for file&#39;s size." alt="" coords="5,155,103,181"/>
+<area shape="rect" id="node2" href="$class_filter.html" title="Base class for filter." alt="" coords="29,80,79,107"/>
+<area shape="rect" id="node3" href="$class_i_filter.html" title="Abstract interface for filters." alt="" coords="27,5,81,32"/>
 </map>

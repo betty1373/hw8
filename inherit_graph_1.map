@@ -1,8 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_i_filter.html" title=" " alt="" coords="5,81,60,108"/>
-<area shape="rect" id="node2" href="$class_filter.html" title=" " alt="" coords="108,81,159,108"/>
-<area shape="rect" id="node3" href="$class_depth_filter.html" title=" " alt="" coords="213,5,298,32"/>
-<area shape="rect" id="node4" href="$class_exclude_filter.html" title=" " alt="" coords="207,56,303,83"/>
-<area shape="rect" id="node5" href="$class_masks_filter.html" title=" " alt="" coords="210,107,301,133"/>
-<area shape="rect" id="node6" href="$class_min_size_filter.html" title=" " alt="" coords="207,157,304,184"/>
+<area shape="rect" id="node1" href="$class_i_filter.html" title="Abstract interface for filters." alt="" coords="5,81,60,108"/>
+<area shape="rect" id="node2" href="$class_filter.html" title="Base class for filter." alt="" coords="108,81,159,108"/>
+<area shape="rect" id="node3" href="$class_depth_filter.html" title="Filter for depth scan dirs." alt="" coords="213,5,298,32"/>
+<area shape="rect" id="node4" href="$class_exclude_filter.html" title="Filter for exclude dirs." alt="" coords="207,56,303,83"/>
+<area shape="rect" id="node5" href="$class_masks_filter.html" title="Filter for file&#39;s masks." alt="" coords="210,107,301,133"/>
+<area shape="rect" id="node6" href="$class_min_size_filter.html" title="Filter for file&#39;s size." alt="" coords="207,157,304,184"/>
 </map>
