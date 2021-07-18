@@ -83,223 +83,48 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="class_path_finder.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_path_finder.html">PathFinder</a> {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="class_path_finder.html#a45ba20997332c2aba4a5afbfff46921f">   18</a></span>&#160;    <a class="code" href="class_path_finder.html#a45ba20997332c2aba4a5afbfff46921f">PathFinder</a>(<span class="keyword">const</span> std::vector&lt;fs::path&gt;&amp; a_excPaths, boost::optional&lt;std::size_t&gt;&amp; a_depth, std::vector&lt;std::string&gt; a_masks, boost::optional&lt;std::size_t&gt;&amp; a_minSize)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        m_dirFilter = CreateFilter(a_depth, a_excPaths);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        m_fileFilter =  CreateFilter(a_minSize, a_masks);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    };</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_path_finder.html#a44b8972a134c36b70c1aa46dce71a697">   23</a></span>&#160;    <a class="code" href="class_path_finder.html#a44b8972a134c36b70c1aa46dce71a697">~PathFinder</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_path_finder.html#aa7a82f602b2b3b4f7182ee066fca70e8">   26</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="class_path_finder.html#aa7a82f602b2b3b4f7182ee066fca70e8">FindPaths</a>(<span class="keyword">const</span> <a class="code" href="_filter_8h.html#a20172321717c6573fdb5292d4d8df454">Paths</a>&amp; a_paths) {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        std::unordered_map&lt;std::size_t,std::set&lt;fs::path&gt;&gt; result;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;path : a_paths) {       </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            fs::recursive_directory_iterator it(path), end;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordflow">while</span> (it != end)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                std::pair&lt;fs::path,std::size_t&gt; dirPath = std::make_pair(it-&gt;path(), it.level());             </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">if</span> (fs::is_directory(it-&gt;path()) ) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    <span class="comment">//std::cout &lt;&lt; it-&gt;path().string()&lt;&lt;std::endl;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                    <span class="keywordflow">if</span> (!m_dirFilter-&gt;IsValid(dirPath))  it.no_push();            </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                    <span class="keywordflow">if</span> (fs::is_regular_file(it-&gt;path()) ) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                        std::pair&lt;fs::path,std::size_t&gt; filePath = std::make_pair(it-&gt;path(), fs::file_size(it-&gt;path()));</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;             </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                        <span class="keywordflow">if</span> (m_fileFilter-&gt;IsValid(filePath) ) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                            <span class="keyword">auto</span>&amp; uniquepaths = result[filePath.second];</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            uniquepaths.insert(filePath.first);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                    }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                boost::system::error_code ec;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                it.increment(ec);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                 <span class="keywordflow">if</span> (ec) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                     std::cerr &lt;&lt; <span class="stringliteral">&quot;Error while accessing: &quot;</span> &lt;&lt; it-&gt;path().string() &lt;&lt; <span class="stringliteral">&quot; :: &quot;</span> &lt;&lt; ec.message() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;              }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">if</span> (!result.empty()) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">auto</span> it = result.begin();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">while</span>(it != result.end()) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">if</span> (it-&gt;second.size() &lt; 2) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                  it = result.erase(it);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">else</span> ++it;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    };</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;Filter&gt; CreateFilter(boost::optional&lt;std::size_t&gt;&amp; a_depth, <span class="keyword">const</span> <a class="code" href="_filter_8h.html#a20172321717c6573fdb5292d4d8df454">Paths</a>&amp; a_paths)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    {   </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        std::size_t depth = 0;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">if</span> (a_depth) {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            depth = a_depth.get();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">auto</span> depthFilter = std::make_unique&lt;DepthFilter&gt;(depth);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">auto</span> excFilter = std::make_shared&lt;ExcludeFilter&gt;(a_paths);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        depthFilter-&gt;SetNext(excFilter);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">return</span> depthFilter;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;Filter&gt; CreateFilter(boost::optional&lt;std::size_t&gt;&amp; a_minSize, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; a_masks) </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        std::size_t minSize = 1;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">if</span> (a_minSize) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            minSize = a_minSize.get();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">auto</span> minSizeFilter = std::make_unique&lt;MinSizeFilter&gt;(minSize);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">auto</span> masksFilter = std::make_shared&lt;MasksFilter&gt;(a_masks);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        minSizeFilter-&gt;SetNext(masksFilter);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">return</span> minSizeFilter; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    std::unique_ptr&lt;Filter&gt; m_dirFilter;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    std::unique_ptr&lt;Filter&gt; m_fileFilter;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="_file_scanner_8h.html#afc52e495a4aff5280162e538e586c476">  102</a></span>&#160;<span class="keyword">using</span> <a class="code" href="_file_scanner_8h.html#afc52e495a4aff5280162e538e586c476">HashFunc_t</a> = boost::function&lt;std::size_t (<span class="keywordtype">char</span>*, std::size_t)&gt;;</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="class_file_scanner.html">  104</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_file_scanner.html">FileScanner</a></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;{</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="class_file_scanner.html#a1855fec49b22176b7fcfe21f8a18b2fc">  107</a></span>&#160;  <a class="code" href="class_file_scanner.html#a1855fec49b22176b7fcfe21f8a18b2fc">FileScanner</a>(boost::optional&lt;std::size_t&gt;&amp; a_block, boost::optional&lt;std::string&gt;&amp; a_algo) {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      m_block =  1024;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">if</span> (a_block) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        m_block = a_block.get();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    m_hashFunc = CreateHash(a_algo);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  }</div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="class_file_scanner.html#ad13f371d5f786743647c557d40e4f457">  115</a></span>&#160;  <span class="keyword">auto</span> <a class="code" href="class_file_scanner.html#ad13f371d5f786743647c557d40e4f457">Scan</a>(std::unordered_map&lt;std::size_t,std::set&lt;fs::path&gt;&gt; a_paths) {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        std::list&lt;std::vector&lt;fs::path&gt;&gt; result;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp;  group : a_paths) {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="comment">// std::cout&lt;&lt;group.second.size()&lt;&lt;std::endl;</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="comment">//   std::for_each(group.second.begin(),group.second.end(), </span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="comment">//   [](const auto&amp; value)</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="comment">//   {</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="comment">//     std::cout&lt;&lt;value&lt;&lt;std::endl;</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="comment">//   }</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="comment">// );</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;          <span class="keyword">auto</span> duplicates = CheckPaths(group.second);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;          <span class="keyword">auto</span> groups = Groups(duplicates);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;          std::copy(groups.begin(),groups.end(),std::back_inserter(result));</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  std::unordered_map&lt;std::string,std::pair&lt;std::fstream, std::size_t&gt;&gt; CheckPaths(<span class="keyword">const</span> std::set&lt;fs::path&gt;&amp; a_paths) {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    std::unordered_map&lt;std::string,std::pair&lt;std::fstream, std::size_t&gt;&gt; result;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; path : a_paths) {      </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keyword">auto</span> str_path = path.string();       </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        std::fstream read_stream(str_path,std::fstream::in);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        result[str_path] = std::make_pair(std::move(read_stream),0);          </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    std::vector&lt;char&gt; buffer(m_block);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">bool</span> endFiles = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">while</span> (!result.empty() &amp;&amp; !endFiles) {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; elem : result) {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        memset(buffer.data(), 0, m_block);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keyword">auto</span>&amp; value = elem.second;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="comment">//std::cout&lt;&lt;elem.first&lt;&lt;std::endl;</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keyword">auto</span> readBytes = value.first.readsome(buffer.data(), m_block);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        endFiles = <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(readBytes) &lt; m_block;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        value.second = m_hashFunc(buffer.data(), buffer.size());</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;       <span class="comment">// std::cout&lt;&lt;elem.first&lt;&lt;&quot; &quot;&lt;&lt;value.second&lt;&lt;&quot; &quot;&lt;&lt;readBytes&lt;&lt;std::endl;</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;      }</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      <span class="comment">//std::cout&lt;&lt;std::endl;</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <span class="keyword">auto</span> it = result.begin();</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      <span class="keywordflow">while</span> (it != result.end()) {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordtype">size_t</span> count = 0;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordtype">size_t</span> curHash = it-&gt;second.second;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        std::for_each(result.begin(), result.end(), </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;          [curHash, &amp;count](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; value)</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;          {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            if (value.second.second == curHash) {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;              ++count;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;          }</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        );</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      <span class="comment">// std::cout &lt;&lt;count&lt;&lt;std::endl;</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">if</span> (count == 1) {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;          it = result.erase(it);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;          ++it;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;std::list&lt;std::vector&lt;fs::path&gt;&gt; Groups(std::unordered_map&lt;std::string,std::pair&lt;std::fstream, std::size_t&gt;&gt;&amp; a_paths)</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;{</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  std::list&lt;std::vector&lt;fs::path&gt;&gt; result;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keywordflow">while</span> (!a_paths.empty()) {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    std::vector&lt;fs::path&gt; paths;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    std::size_t curHash = a_paths.begin()-&gt;second.second;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keyword">auto</span> it = a_paths.begin();</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">while</span> (it != a_paths.end()) {</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      <span class="keywordflow">if</span> (it-&gt;second.second == curHash) {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        paths.emplace_back(it-&gt;first);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        it = a_paths.erase(it);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      }</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        ++it;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordflow">if</span> (!paths.empty()) {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      result.emplace_back(paths);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  }</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;}</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keyword">static</span> boost::function&lt;std::size_t (<span class="keywordtype">char</span>*, std::size_t)&gt; CreateHash(boost::optional&lt;std::string&gt;&amp; a_algo) {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  <span class="keywordflow">if</span> (a_algo) {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordflow">if</span> (a_algo.get() == <span class="stringliteral">&quot;crc16&quot;</span>) {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      <span class="keywordflow">return</span> HashFunc&lt;boost::crc_16_type&gt;();</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (a_algo.get() == <span class="stringliteral">&quot;crc32&quot;</span>) {</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;      <span class="keywordflow">return</span> HashFunc&lt;boost::crc_32_type&gt;();</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    }</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  }</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  <span class="keywordflow">return</span> HashFunc&lt;boost::crc_32_type&gt;();</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;}</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="keyword">static</span> boost::function&lt;std::size_t (<span class="keywordtype">char</span>* a_buffer, std::size_t a_count)&gt; HashFunc() {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">return</span> [](<span class="keywordtype">char</span>* a_buffer, std::size_t a_count) {</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      T algo;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      algo.process_bytes(a_buffer, a_count);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      <span class="keywordflow">return</span> algo.checksum();</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    };</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  std::size_t m_block;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  boost::function&lt;std::size_t (<span class="keywordtype">char</span>*, std::size_t)&gt; m_hashFunc;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;};</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="a_file_scanner_8h_html_afc52e495a4aff5280162e538e586c476"><div class="ttname"><a href="_file_scanner_8h.html#afc52e495a4aff5280162e538e586c476">HashFunc_t</a></div><div class="ttdeci">boost::function&lt; std::size_t(char *, std::size_t)&gt; HashFunc_t</div><div class="ttdef"><b>Definition:</b> FileScanner.h:102</div></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="class_path_finder.html#a45ba20997332c2aba4a5afbfff46921f">PathFinder</a>(<span class="keyword">const</span> std::vector&lt;fs::path&gt;&amp; a_excPaths, boost::optional&lt;std::size_t&gt;&amp; a_depth, </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        std::vector&lt;std::string&gt; a_masks, boost::optional&lt;std::size_t&gt;&amp; a_minSize);</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="class_path_finder.html#a44b8972a134c36b70c1aa46dce71a697">   20</a></span>&#160;    <a class="code" href="class_path_finder.html#a44b8972a134c36b70c1aa46dce71a697">~PathFinder</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    std::unordered_map&lt;std::size_t,std::set&lt;fs::path&gt;&gt; <a class="code" href="class_path_finder.html#a80909620f01d7507a79582e9d689d78e">FindPaths</a>(<span class="keyword">const</span> <a class="code" href="_filter_8h.html#a20172321717c6573fdb5292d4d8df454">Paths</a>&amp; a_paths);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;Filter&gt; CreateFilter(boost::optional&lt;std::size_t&gt;&amp; a_depth, <span class="keyword">const</span> <a class="code" href="_filter_8h.html#a20172321717c6573fdb5292d4d8df454">Paths</a>&amp; a_paths);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;Filter&gt; CreateFilter(boost::optional&lt;std::size_t&gt;&amp; a_minSize, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; a_masks);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    std::unique_ptr&lt;Filter&gt; m_dirFilter;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    std::unique_ptr&lt;Filter&gt; m_fileFilter;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;};</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="_file_scanner_8h.html#afc52e495a4aff5280162e538e586c476">   34</a></span>&#160;<span class="keyword">using</span> <a class="code" href="_file_scanner_8h.html#afc52e495a4aff5280162e538e586c476">HashFunc_t</a> = boost::function&lt;std::size_t (<span class="keywordtype">char</span>*, std::size_t)&gt;;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_file_scanner.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_file_scanner.html">FileScanner</a> {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="class_file_scanner.html#a1855fec49b22176b7fcfe21f8a18b2fc">FileScanner</a>(boost::optional&lt;std::size_t&gt;&amp; a_block, boost::optional&lt;std::string&gt;&amp; a_algo);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  std::list&lt;std::vector&lt;fs::path&gt;&gt; <a class="code" href="class_file_scanner.html#af7be2f9acd450983e7748273a7cc2fc3">Scan</a>(std::unordered_map&lt;std::size_t,std::set&lt;fs::path&gt;&gt; a_paths); </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  std::unordered_map&lt;std::string,std::pair&lt;std::fstream, std::size_t&gt;&gt; CheckPaths(<span class="keyword">const</span> std::set&lt;fs::path&gt;&amp; a_paths); </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  std::list&lt;std::vector&lt;fs::path&gt;&gt; Groups(std::unordered_map&lt;std::string,std::pair&lt;std::fstream, std::size_t&gt;&gt;&amp; a_paths);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">static</span> boost::function&lt;std::size_t (<span class="keywordtype">char</span>*, std::size_t)&gt; CreateHash(boost::optional&lt;std::string&gt;&amp; a_algo);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keyword">static</span> boost::function&lt;std::size_t (<span class="keywordtype">char</span>* a_buffer, std::size_t a_count)&gt; HashFunc();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  std::size_t m_block;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  boost::function&lt;std::size_t (<span class="keywordtype">char</span>*, std::size_t)&gt; m_hashFunc;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="a_file_scanner_8h_html_afc52e495a4aff5280162e538e586c476"><div class="ttname"><a href="_file_scanner_8h.html#afc52e495a4aff5280162e538e586c476">HashFunc_t</a></div><div class="ttdeci">boost::function&lt; std::size_t(char *, std::size_t)&gt; HashFunc_t</div><div class="ttdef"><b>Definition:</b> FileScanner.h:34</div></div>
 <div class="ttc" id="a_filter_8h_html"><div class="ttname"><a href="_filter_8h.html">Filter.h</a></div><div class="ttdoc">filters - pattern Chain of responsibility</div></div>
-<div class="ttc" id="a_filter_8h_html_a20172321717c6573fdb5292d4d8df454"><div class="ttname"><a href="_filter_8h.html#a20172321717c6573fdb5292d4d8df454">Paths</a></div><div class="ttdeci">std::vector&lt; boost::filesystem::path &gt; Paths</div><div class="ttdef"><b>Definition:</b> Filter.h:15</div></div>
+<div class="ttc" id="a_filter_8h_html_a20172321717c6573fdb5292d4d8df454"><div class="ttname"><a href="_filter_8h.html#a20172321717c6573fdb5292d4d8df454">Paths</a></div><div class="ttdeci">std::vector&lt; boost::filesystem::path &gt; Paths</div><div class="ttdef"><b>Definition:</b> Filter.h:17</div></div>
 <div class="ttc" id="a_options_8h_html"><div class="ttname"><a href="_options_8h.html">Options.h</a></div><div class="ttdoc">Class of program options.</div></div>
-<div class="ttc" id="aclass_file_scanner_html"><div class="ttname"><a href="class_file_scanner.html">FileScanner</a></div><div class="ttdoc">File scanner.</div><div class="ttdef"><b>Definition:</b> FileScanner.h:105</div></div>
-<div class="ttc" id="aclass_file_scanner_html_a1855fec49b22176b7fcfe21f8a18b2fc"><div class="ttname"><a href="class_file_scanner.html#a1855fec49b22176b7fcfe21f8a18b2fc">FileScanner::FileScanner</a></div><div class="ttdeci">FileScanner(boost::optional&lt; std::size_t &gt; &amp;a_block, boost::optional&lt; std::string &gt; &amp;a_algo)</div><div class="ttdef"><b>Definition:</b> FileScanner.h:107</div></div>
-<div class="ttc" id="aclass_file_scanner_html_ad13f371d5f786743647c557d40e4f457"><div class="ttname"><a href="class_file_scanner.html#ad13f371d5f786743647c557d40e4f457">FileScanner::Scan</a></div><div class="ttdeci">auto Scan(std::unordered_map&lt; std::size_t, std::set&lt; fs::path &gt;&gt; a_paths)</div><div class="ttdoc">Finding Duplicates.</div><div class="ttdef"><b>Definition:</b> FileScanner.h:115</div></div>
+<div class="ttc" id="aclass_file_scanner_html"><div class="ttname"><a href="class_file_scanner.html">FileScanner</a></div><div class="ttdoc">File scanner.</div><div class="ttdef"><b>Definition:</b> FileScanner.h:36</div></div>
+<div class="ttc" id="aclass_file_scanner_html_a1855fec49b22176b7fcfe21f8a18b2fc"><div class="ttname"><a href="class_file_scanner.html#a1855fec49b22176b7fcfe21f8a18b2fc">FileScanner::FileScanner</a></div><div class="ttdeci">FileScanner(boost::optional&lt; std::size_t &gt; &amp;a_block, boost::optional&lt; std::string &gt; &amp;a_algo)</div><div class="ttdef"><b>Definition:</b> FileScanner.cpp:84</div></div>
+<div class="ttc" id="aclass_file_scanner_html_af7be2f9acd450983e7748273a7cc2fc3"><div class="ttname"><a href="class_file_scanner.html#af7be2f9acd450983e7748273a7cc2fc3">FileScanner::Scan</a></div><div class="ttdeci">std::list&lt; std::vector&lt; fs::path &gt; &gt; Scan(std::unordered_map&lt; std::size_t, std::set&lt; fs::path &gt;&gt; a_paths)</div><div class="ttdoc">Finding Duplicates.</div><div class="ttdef"><b>Definition:</b> FileScanner.cpp:92</div></div>
 <div class="ttc" id="aclass_path_finder_html"><div class="ttname"><a href="class_path_finder.html">PathFinder</a></div><div class="ttdef"><b>Definition:</b> FileScanner.h:15</div></div>
 <div class="ttc" id="aclass_path_finder_html_a44b8972a134c36b70c1aa46dce71a697"><div class="ttname"><a href="class_path_finder.html#a44b8972a134c36b70c1aa46dce71a697">PathFinder::~PathFinder</a></div><div class="ttdeci">~PathFinder()=default</div></div>
-<div class="ttc" id="aclass_path_finder_html_a45ba20997332c2aba4a5afbfff46921f"><div class="ttname"><a href="class_path_finder.html#a45ba20997332c2aba4a5afbfff46921f">PathFinder::PathFinder</a></div><div class="ttdeci">PathFinder(const std::vector&lt; fs::path &gt; &amp;a_excPaths, boost::optional&lt; std::size_t &gt; &amp;a_depth, std::vector&lt; std::string &gt; a_masks, boost::optional&lt; std::size_t &gt; &amp;a_minSize)</div><div class="ttdoc">Construct class scanner.</div><div class="ttdef"><b>Definition:</b> FileScanner.h:18</div></div>
-<div class="ttc" id="aclass_path_finder_html_aa7a82f602b2b3b4f7182ee066fca70e8"><div class="ttname"><a href="class_path_finder.html#aa7a82f602b2b3b4f7182ee066fca70e8">PathFinder::FindPaths</a></div><div class="ttdeci">auto FindPaths(const Paths &amp;a_paths)</div><div class="ttdoc">Scan dirs for finding suitable files.</div><div class="ttdef"><b>Definition:</b> FileScanner.h:26</div></div>
+<div class="ttc" id="aclass_path_finder_html_a45ba20997332c2aba4a5afbfff46921f"><div class="ttname"><a href="class_path_finder.html#a45ba20997332c2aba4a5afbfff46921f">PathFinder::PathFinder</a></div><div class="ttdeci">PathFinder(const std::vector&lt; fs::path &gt; &amp;a_excPaths, boost::optional&lt; std::size_t &gt; &amp;a_depth, std::vector&lt; std::string &gt; a_masks, boost::optional&lt; std::size_t &gt; &amp;a_minSize)</div><div class="ttdoc">Construct class scanner.</div><div class="ttdef"><b>Definition:</b> FileScanner.cpp:11</div></div>
+<div class="ttc" id="aclass_path_finder_html_a80909620f01d7507a79582e9d689d78e"><div class="ttname"><a href="class_path_finder.html#a80909620f01d7507a79582e9d689d78e">PathFinder::FindPaths</a></div><div class="ttdeci">std::unordered_map&lt; std::size_t, std::set&lt; fs::path &gt; &gt; FindPaths(const Paths &amp;a_paths)</div><div class="ttdoc">Scan dirs for finding suitable files.</div><div class="ttdef"><b>Definition:</b> FileScanner.cpp:17</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

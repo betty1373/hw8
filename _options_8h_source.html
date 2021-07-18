@@ -79,130 +79,40 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;boost/program_options.hpp&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;boost/optional/optional_io.hpp&gt;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;boost/regex.hpp&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;boost/algorithm/string/replace.hpp&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>fs = boost::filesystem;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>po =  boost::program_options;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="struct_options.html">   18</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_options.html">Options</a> {</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">   19</a></span>&#160;     std::vector&lt;fs::path&gt; <a class="code" href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">incPaths</a>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">   20</a></span>&#160;     std::vector&lt;fs::path&gt; <a class="code" href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">excPaths</a>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">   21</a></span>&#160;     boost::optional&lt;std::size_t&gt; <a class="code" href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">depth</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">   22</a></span>&#160;     boost::optional&lt;std::size_t&gt; <a class="code" href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">minSize</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="struct_options.html#ab1223db5e9379d5b9099667814995767">   23</a></span>&#160;     std::vector&lt;std::string&gt; <a class="code" href="struct_options.html#ab1223db5e9379d5b9099667814995767">masks</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">   24</a></span>&#160;     boost::optional&lt;std::size_t&gt; <a class="code" href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">block</a>; </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">   25</a></span>&#160;     boost::optional&lt;std::string&gt; <a class="code" href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">algo</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="class_options___parser.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_options___parser.html">Options_Parser</a>{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; <span class="keyword">public</span>: </div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_options___parser.html#ac72a075396e88d4ef5fa6a6a9355192e">   30</a></span>&#160;     <a class="code" href="class_options___parser.html#ac72a075396e88d4ef5fa6a6a9355192e">Options_Parser</a>()</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;          : m_desc(<span class="stringliteral">&quot;Options&quot;</span>)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;     {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;          m_desc.add_options()</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;          (<span class="stringliteral">&quot;help,h&quot;</span>,   <span class="stringliteral">&quot;Help&quot;</span>)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;          (<span class="stringliteral">&quot;include,i&quot;</span>,  po::value&lt;std::vector&lt;fs::path&gt;&gt;(), <span class="stringliteral">&quot;Directories for scan&quot;</span>)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;          (<span class="stringliteral">&quot;exclude,e&quot;</span>,po::value&lt;std::vector&lt;fs::path&gt;&gt;(), <span class="stringliteral">&quot;Excluded inner directories&quot;</span>)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;          (<span class="stringliteral">&quot;depth,d&quot;</span>,  po::value&lt;std::size_t&gt;(), <span class="stringliteral">&quot;Scan depth - default 0&quot;</span>)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;          (<span class="stringliteral">&quot;size,s&quot;</span>,   po::value&lt;std::size_t&gt;(), <span class="stringliteral">&quot;Minimum file&#39;s size - default 1 byte&quot;</span>)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;          (<span class="stringliteral">&quot;masks,m&quot;</span>,  po::value&lt;std::vector&lt;std::string&gt;&gt;(), <span class="stringliteral">&quot;File masks&quot;</span>)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;          (<span class="stringliteral">&quot;block,b&quot;</span>,  po::value&lt;std::size_t&gt;(), <span class="stringliteral">&quot;Block size&quot;</span>)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;          (<span class="stringliteral">&quot;algo,a&quot;</span>,   po::value&lt;std::string&gt;(), <span class="stringliteral">&quot;Hash algorithm - default crc32&quot;</span>);    </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;     }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;     </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_options___parser.html#aab21d02178cf1713fb380908c3366929">   44</a></span>&#160;     boost::optional&lt;Options&gt; <a class="code" href="class_options___parser.html#aab21d02178cf1713fb380908c3366929">Parse</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> ** argv)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;     {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;          <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;               po::store(parse_command_line(argc, argv, m_desc), m_vm);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;               po::notify(m_vm);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;help&quot;</span>)) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    std::cout &lt;&lt; m_desc &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    <span class="keywordflow">return</span> boost::optional&lt;Options&gt;();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;               }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;               <a class="code" href="struct_options.html">Options</a> ops;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;include&quot;</span>)) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    ops.<a class="code" href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">incPaths</a> = m_vm[<span class="stringliteral">&quot;include&quot;</span>].as&lt;std::vector&lt;fs::path&gt;&gt;();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    <span class="keywordflow">for</span>(<span class="keyword">auto</span> f : ops.<a class="code" href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">incPaths</a>)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                         std::cout &lt;&lt; <span class="stringliteral">&quot;input: &quot;</span> &lt;&lt; f &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;               }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;exclude&quot;</span>)) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    ops.<a class="code" href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">excPaths</a> = m_vm[<span class="stringliteral">&quot;exclude&quot;</span>].as&lt;std::vector&lt;fs::path&gt;&gt;();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <span class="keywordflow">for</span>(<span class="keyword">auto</span> f : ops.<a class="code" href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">excPaths</a>)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                         std::cout &lt;&lt; <span class="stringliteral">&quot;exclude: &quot;</span> &lt;&lt; f &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;               }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;depth&quot;</span>)) {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    ops.<a class="code" href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">depth</a> = m_vm[<span class="stringliteral">&quot;depth&quot;</span>].as&lt;std::size_t&gt;();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    std::cout &lt;&lt; <span class="stringliteral">&quot;depth: &quot;</span> &lt;&lt; ops.<a class="code" href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">depth</a> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;               }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;size&quot;</span>)) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    ops.<a class="code" href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">minSize</a> = m_vm[<span class="stringliteral">&quot;size&quot;</span>].as&lt;std::size_t&gt;();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                    std::cout &lt;&lt; <span class="stringliteral">&quot;size: &quot;</span> &lt;&lt; ops.<a class="code" href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">minSize</a> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;               }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;masks&quot;</span>)) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                    ops.<a class="code" href="struct_options.html#ab1223db5e9379d5b9099667814995767">masks</a> = m_vm[<span class="stringliteral">&quot;masks&quot;</span>].as&lt;std::vector&lt;std::string&gt;&gt;();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    <span class="keywordflow">for</span>(<span class="keyword">auto</span> f : ops.<a class="code" href="struct_options.html#ab1223db5e9379d5b9099667814995767">masks</a>)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                         std::cout &lt;&lt; <span class="stringliteral">&quot;masks: &quot;</span> &lt;&lt; f &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;               }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;block&quot;</span>)) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    ops.<a class="code" href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">block</a> = m_vm[<span class="stringliteral">&quot;block&quot;</span>].as&lt;std::size_t&gt;();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    std::cout &lt;&lt; <span class="stringliteral">&quot;block: &quot;</span> &lt;&lt; ops.<a class="code" href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">block</a> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;               }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;               <span class="keywordflow">if</span> (m_vm.count(<span class="stringliteral">&quot;algo&quot;</span>)) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    ops.<a class="code" href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">algo</a> = m_vm[<span class="stringliteral">&quot;algo&quot;</span>].as&lt;std::string&gt;();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                    std::cout &lt;&lt; <span class="stringliteral">&quot;algo: &quot;</span> &lt;&lt; ops.<a class="code" href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">algo</a> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;               }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;               <span class="keywordflow">return</span> ops;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;          }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;          <span class="keywordflow">catch</span>(<span class="keyword">const</span> std::exception&amp; e)</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;          {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;               std::cerr &lt;&lt; e.what() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;               <span class="keywordflow">return</span> boost::optional&lt;Options&gt;();</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;          }             </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;     }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;     po::options_description m_desc;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;     po::variables_map m_vm;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;};</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="class_mask.html">  101</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_mask.html">Mask</a></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="class_mask.html#a1b8b7b89f83179f177283c69b65a7e9b">  104</a></span>&#160;  <span class="keyword">explicit</span> <a class="code" href="class_mask.html#a1b8b7b89f83179f177283c69b65a7e9b">Mask</a>(<span class="keyword">const</span> std::string&amp; a_mask)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">auto</span> mask = a_mask;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    boost::replace_all(mask, <span class="stringliteral">&quot;.&quot;</span>, <span class="stringliteral">&quot;\\.&quot;</span>);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    boost::replace_all(mask, <span class="stringliteral">&quot;*&quot;</span>, <span class="stringliteral">&quot;\\*&quot;</span>);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    boost::replace_all(mask, <span class="stringliteral">&quot;?&quot;</span>, <span class="stringliteral">&quot;\\?&quot;</span>);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    boost::replace_all(mask, <span class="stringliteral">&quot;\\?&quot;</span>, <span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    boost::replace_all(mask, <span class="stringliteral">&quot;\\*&quot;</span>, <span class="stringliteral">&quot;.*&quot;</span>);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    m_regex = boost::regex(mask, boost::regex::icase );</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="class_mask.html#aa39fe4463d3cc87d431717b399f80815">  115</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="class_mask.html#aa39fe4463d3cc87d431717b399f80815">Valid</a>(<span class="keyword">const</span> std::string&amp; a_strValue)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">return</span> boost::regex_match(a_strValue, m_what, m_regex);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  boost::regex m_regex;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  boost::smatch m_what;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;};</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_mask_html"><div class="ttname"><a href="class_mask.html">Mask</a></div><div class="ttdoc">Mask for files.</div><div class="ttdef"><b>Definition:</b> Options.h:102</div></div>
-<div class="ttc" id="aclass_mask_html_a1b8b7b89f83179f177283c69b65a7e9b"><div class="ttname"><a href="class_mask.html#a1b8b7b89f83179f177283c69b65a7e9b">Mask::Mask</a></div><div class="ttdeci">Mask(const std::string &amp;a_mask)</div><div class="ttdef"><b>Definition:</b> Options.h:104</div></div>
-<div class="ttc" id="aclass_mask_html_aa39fe4463d3cc87d431717b399f80815"><div class="ttname"><a href="class_mask.html#aa39fe4463d3cc87d431717b399f80815">Mask::Valid</a></div><div class="ttdeci">bool Valid(const std::string &amp;a_strValue)</div><div class="ttdef"><b>Definition:</b> Options.h:115</div></div>
-<div class="ttc" id="aclass_options___parser_html"><div class="ttname"><a href="class_options___parser.html">Options_Parser</a></div><div class="ttdef"><b>Definition:</b> Options.h:28</div></div>
-<div class="ttc" id="aclass_options___parser_html_aab21d02178cf1713fb380908c3366929"><div class="ttname"><a href="class_options___parser.html#aab21d02178cf1713fb380908c3366929">Options_Parser::Parse</a></div><div class="ttdeci">boost::optional&lt; Options &gt; Parse(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> Options.h:44</div></div>
-<div class="ttc" id="aclass_options___parser_html_ac72a075396e88d4ef5fa6a6a9355192e"><div class="ttname"><a href="class_options___parser.html#ac72a075396e88d4ef5fa6a6a9355192e">Options_Parser::Options_Parser</a></div><div class="ttdeci">Options_Parser()</div><div class="ttdef"><b>Definition:</b> Options.h:30</div></div>
-<div class="ttc" id="astruct_options_html"><div class="ttname"><a href="struct_options.html">Options</a></div><div class="ttdef"><b>Definition:</b> Options.h:18</div></div>
-<div class="ttc" id="astruct_options_html_a0b7302def3a5ec9ab492ba33c27ba180"><div class="ttname"><a href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">Options::block</a></div><div class="ttdeci">boost::optional&lt; std::size_t &gt; block</div><div class="ttdef"><b>Definition:</b> Options.h:24</div></div>
-<div class="ttc" id="astruct_options_html_a2ab9da0ca3c6f746a38e5530eeeaeb22"><div class="ttname"><a href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">Options::algo</a></div><div class="ttdeci">boost::optional&lt; std::string &gt; algo</div><div class="ttdef"><b>Definition:</b> Options.h:25</div></div>
-<div class="ttc" id="astruct_options_html_a5e5d1937647728cd70e8e4a987f21702"><div class="ttname"><a href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">Options::incPaths</a></div><div class="ttdeci">std::vector&lt; fs::path &gt; incPaths</div><div class="ttdef"><b>Definition:</b> Options.h:19</div></div>
-<div class="ttc" id="astruct_options_html_a5f7d76b444e7fc4caaa4c3d6fb56c96a"><div class="ttname"><a href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">Options::excPaths</a></div><div class="ttdeci">std::vector&lt; fs::path &gt; excPaths</div><div class="ttdef"><b>Definition:</b> Options.h:20</div></div>
-<div class="ttc" id="astruct_options_html_a6cb435905db661ea9913fcdc9673fbdf"><div class="ttname"><a href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">Options::depth</a></div><div class="ttdeci">boost::optional&lt; std::size_t &gt; depth</div><div class="ttdef"><b>Definition:</b> Options.h:21</div></div>
-<div class="ttc" id="astruct_options_html_ab1223db5e9379d5b9099667814995767"><div class="ttname"><a href="struct_options.html#ab1223db5e9379d5b9099667814995767">Options::masks</a></div><div class="ttdeci">std::vector&lt; std::string &gt; masks</div><div class="ttdef"><b>Definition:</b> Options.h:23</div></div>
-<div class="ttc" id="astruct_options_html_aef94a9ee16d75d6fe72c551fa412e948"><div class="ttname"><a href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">Options::minSize</a></div><div class="ttdeci">boost::optional&lt; std::size_t &gt; minSize</div><div class="ttdef"><b>Definition:</b> Options.h:22</div></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>fs = boost::filesystem;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>po =  boost::program_options;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="struct_options.html">   16</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_options.html">Options</a> {</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">   17</a></span>&#160;     std::vector&lt;fs::path&gt; <a class="code" href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">incPaths</a>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">   18</a></span>&#160;     std::vector&lt;fs::path&gt; <a class="code" href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">excPaths</a>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">   19</a></span>&#160;     boost::optional&lt;std::size_t&gt; <a class="code" href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">depth</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">   20</a></span>&#160;     boost::optional&lt;std::size_t&gt; <a class="code" href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">minSize</a>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="struct_options.html#ab1223db5e9379d5b9099667814995767">   21</a></span>&#160;     std::vector&lt;std::string&gt; <a class="code" href="struct_options.html#ab1223db5e9379d5b9099667814995767">masks</a>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">   22</a></span>&#160;     boost::optional&lt;std::size_t&gt; <a class="code" href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">block</a>; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">   23</a></span>&#160;     boost::optional&lt;std::string&gt; <a class="code" href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">algo</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_options___parser.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_options___parser.html">Options_Parser</a>{</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; <span class="keyword">public</span>: </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;     <a class="code" href="class_options___parser.html#ac72a075396e88d4ef5fa6a6a9355192e">Options_Parser</a>();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;     boost::optional&lt;Options&gt; <a class="code" href="class_options___parser.html#a4dc7746d6910db64fcb8b4065a06b48a">Parse</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> ** argv);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;     </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;     po::options_description m_desc;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;     po::variables_map m_vm;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;};</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_options___parser_html"><div class="ttname"><a href="class_options___parser.html">Options_Parser</a></div><div class="ttdef"><b>Definition:</b> Options.h:26</div></div>
+<div class="ttc" id="aclass_options___parser_html_a4dc7746d6910db64fcb8b4065a06b48a"><div class="ttname"><a href="class_options___parser.html#a4dc7746d6910db64fcb8b4065a06b48a">Options_Parser::Parse</a></div><div class="ttdeci">boost::optional&lt; Options &gt; Parse(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> Options.cpp:16</div></div>
+<div class="ttc" id="aclass_options___parser_html_ac72a075396e88d4ef5fa6a6a9355192e"><div class="ttname"><a href="class_options___parser.html#ac72a075396e88d4ef5fa6a6a9355192e">Options_Parser::Options_Parser</a></div><div class="ttdeci">Options_Parser()</div><div class="ttdef"><b>Definition:</b> Options.cpp:3</div></div>
+<div class="ttc" id="astruct_options_html"><div class="ttname"><a href="struct_options.html">Options</a></div><div class="ttdef"><b>Definition:</b> Options.h:16</div></div>
+<div class="ttc" id="astruct_options_html_a0b7302def3a5ec9ab492ba33c27ba180"><div class="ttname"><a href="struct_options.html#a0b7302def3a5ec9ab492ba33c27ba180">Options::block</a></div><div class="ttdeci">boost::optional&lt; std::size_t &gt; block</div><div class="ttdef"><b>Definition:</b> Options.h:22</div></div>
+<div class="ttc" id="astruct_options_html_a2ab9da0ca3c6f746a38e5530eeeaeb22"><div class="ttname"><a href="struct_options.html#a2ab9da0ca3c6f746a38e5530eeeaeb22">Options::algo</a></div><div class="ttdeci">boost::optional&lt; std::string &gt; algo</div><div class="ttdef"><b>Definition:</b> Options.h:23</div></div>
+<div class="ttc" id="astruct_options_html_a5e5d1937647728cd70e8e4a987f21702"><div class="ttname"><a href="struct_options.html#a5e5d1937647728cd70e8e4a987f21702">Options::incPaths</a></div><div class="ttdeci">std::vector&lt; fs::path &gt; incPaths</div><div class="ttdef"><b>Definition:</b> Options.h:17</div></div>
+<div class="ttc" id="astruct_options_html_a5f7d76b444e7fc4caaa4c3d6fb56c96a"><div class="ttname"><a href="struct_options.html#a5f7d76b444e7fc4caaa4c3d6fb56c96a">Options::excPaths</a></div><div class="ttdeci">std::vector&lt; fs::path &gt; excPaths</div><div class="ttdef"><b>Definition:</b> Options.h:18</div></div>
+<div class="ttc" id="astruct_options_html_a6cb435905db661ea9913fcdc9673fbdf"><div class="ttname"><a href="struct_options.html#a6cb435905db661ea9913fcdc9673fbdf">Options::depth</a></div><div class="ttdeci">boost::optional&lt; std::size_t &gt; depth</div><div class="ttdef"><b>Definition:</b> Options.h:19</div></div>
+<div class="ttc" id="astruct_options_html_ab1223db5e9379d5b9099667814995767"><div class="ttname"><a href="struct_options.html#ab1223db5e9379d5b9099667814995767">Options::masks</a></div><div class="ttdeci">std::vector&lt; std::string &gt; masks</div><div class="ttdef"><b>Definition:</b> Options.h:21</div></div>
+<div class="ttc" id="astruct_options_html_aef94a9ee16d75d6fe72c551fa412e948"><div class="ttname"><a href="struct_options.html#aef94a9ee16d75d6fe72c551fa412e948">Options::minSize</a></div><div class="ttdeci">boost::optional&lt; std::size_t &gt; minSize</div><div class="ttdef"><b>Definition:</b> Options.h:20</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

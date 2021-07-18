@@ -1,5 +1,6 @@
 <map id="inc/Filter.h" name="inc/Filter.h">
-<area shape="rect" id="node1" title="filters &#45; pattern Chain of responsibility" alt="" coords="25,5,108,32"/>
-<area shape="rect" id="node2" href="$_file_scanner_8h.html" title="Class of find suitable files." alt="" coords="5,80,128,107"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="Main function. Find dublicate files." alt="" coords="29,155,104,181"/>
+<area shape="rect" id="node1" title="filters &#45; pattern Chain of responsibility" alt="" coords="82,5,165,32"/>
+<area shape="rect" id="node2" href="$_file_scanner_8h.html" title="Class of find suitable files." alt="" coords="111,80,234,107"/>
+<area shape="rect" id="node3" href="$_file_scanner_8cpp.html" title=" " alt="" coords="5,155,143,181"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="Main function. Find dublicate files." alt="" coords="167,155,263,181"/>
 </map>
