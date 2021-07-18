@@ -1,4 +1,4 @@
-#include "inc/FileScanner.h"
+#include "../inc/FileScanner.h"
 #include "iostream"
 
 /// @file

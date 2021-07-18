@@ -8,12 +8,37 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <memory>
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
 /// @file
 /// @brief filters - pattern Chain of responsibility
 /// @author btv<example@example.com>
 using Path = std::pair<boost::filesystem::path, std::size_t>; 
 using Paths = std::vector<boost::filesystem::path>;
 
+/// @brief Mask for files
+class Mask
+{
+public:
+  explicit Mask(const std::string& a_mask)
+  {
+    auto mask = a_mask;
+    boost::replace_all(mask, ".", "\\.");
+    boost::replace_all(mask, "*", "\\*");
+    boost::replace_all(mask, "?", "\\?");
+    boost::replace_all(mask, "\\?", ".");
+    boost::replace_all(mask, "\\*", ".*");
+    m_regex = boost::regex(mask, boost::regex::icase );
+  }
+
+  bool Valid(const std::string& a_strValue)
+  {
+    return boost::regex_match(a_strValue, m_what, m_regex);
+  }
+private:
+  boost::regex m_regex;
+  boost::smatch m_what;
+};
 /// @brief Abstract interface for filters
 class IFilter
 {

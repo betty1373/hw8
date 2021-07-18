@@ -17,7 +17,10 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 configure_file(version.h.in ${PROJECT_SOURCE_DIR}/version.h)
 
-add_executable(bayan ${PROJECT_SOURCE_DIR}/main.cpp)
+file(GLOB TARGET_SRC
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/inc/*.h")
+add_executable(bayan ${TARGET_SRC})
 
 set_target_properties(bayan PROPERTIES
     CXX_STANDARD 17
